@@ -26,16 +26,16 @@ router.get('/schemas', async (req, res) => {
   }
 
   // for each table, query all the details
-  let schemaData;
+  let schemaArray = [];
   for (let i = 0; i < tableList.length; i++) {
     const table = tableList[i].table_name;
     console.log(table);
     const displayTableData = `select table_name, column_name, data_type, character_maximum_length, is_nullable
     from INFORMATION_SCHEMA.COLUMNS where table_name = '${table}';`;
     schemaData = await db.query(displayTableData);
-    console.log(schemaData.rows);
+    schemaArray.push(schemaData.rows);
   }
-  res.status(200).send(schemaData.rows);
+  res.status(200).send(schemaArray);
 });
 
 module.exports = router;
